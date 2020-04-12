@@ -7,7 +7,16 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 export default function RadioButtonsGroup() {
   const [value, setValue] = React.useState('1');
-
+  const [question, setQuestion = React.useState('');
+  
+  const newQuestion = () => {
+              fetch('') //Tähän tulee sitten linkki herokuun
+              .then(response => response.json())
+              .then ((responseData) => {
+                  setQuestion(responseData.results[0].question);
+              });
+          }
+         
   const handleChange = (event) => {
     setValue(event.target.value);
   };
