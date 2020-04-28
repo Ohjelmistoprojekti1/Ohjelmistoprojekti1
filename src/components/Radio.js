@@ -33,6 +33,15 @@ export default function RadioButtonsGroup() {
     )
 
 }
+  
+  const deleteAnswer = (answer) => {
+  if (window.confirm('Oletko varma?')){
+    fetch(answer, {method: 'DELETE'})
+      .then(_ => saveAnswer())
+        .catch(err => console.log(err))
+  }
+}
+  
 
   return (
     <FormControl component="fieldset">
