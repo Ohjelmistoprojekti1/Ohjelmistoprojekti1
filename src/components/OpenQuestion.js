@@ -17,7 +17,7 @@ export default function OpenQuestion() {
     }
 
     const saveAnswer = (answer) => {
-        fetch('', //tähän tulee linkki herokuun
+        fetch('https://ohjelmistoprojektii.herokuapp.com/vastaus', //tähän tulee linkki herokuun
             {
                 method:'POST',
                 headers: {
