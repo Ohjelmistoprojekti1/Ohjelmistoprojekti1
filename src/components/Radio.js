@@ -23,7 +23,7 @@ export default function RadioButtonsGroup() {
   }
 
   const saveAnswer = (answer) => {
-    fetch('https://ohjelmistoprojektii.herokuapp.com/saveradio', //tähän tulee linkki herokuun
+    fetch('https://ohjelmistoprojektii.herokuapp.com/vastaus', //tähän tulee linkki herokuun
         {
             method:'POST',
             headers: {
