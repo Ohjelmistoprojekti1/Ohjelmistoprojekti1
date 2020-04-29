@@ -5,10 +5,10 @@ export default function OpenQuestion() {
     const [question, setQuestion] = React.useState('');
 
     React.useEffect(() => {
-        fetch('') //Tähän tulee linkki herokuun
+        fetch('https://ohjelmistoprojektii.herokuapp.com/kysymys') //Tähän tulee linkki herokuun
         .then(response => response.json())
         .then ((responseData) => {
-            setQuestion(responseData.results[0].question);
+            setQuestion(responseData.results[1].question);
         })
     }, [])
 
@@ -33,7 +33,7 @@ export default function OpenQuestion() {
     return (
         
         <div>
-            <p>{question}Tähän tulee kysymys</p>
+            <p>{question}</p>
             <input type="text" size="100" value={answer} onChange={inputChanged} />
             <button onClick={saveAnswer}>Tallenna</button>
         </div>
