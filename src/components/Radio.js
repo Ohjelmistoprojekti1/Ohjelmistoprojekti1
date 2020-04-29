@@ -11,7 +11,7 @@ export default function RadioButtonsGroup() {
   
   React.useEffect(() => {
               fetch('https://ohjelmistoprojektii.herokuapp.com/kysymys', 
-              {credentials: 'same-origin') //Tähän tulee sitten linkki herokuun
+              {credentials: 'same-origin'}) //Tähän tulee sitten linkki herokuun
               .then(response => response.json())
               .then ((responseData) => {
                   setQuestion(responseData[0].question);
