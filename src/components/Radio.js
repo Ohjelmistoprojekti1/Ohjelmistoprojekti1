@@ -10,10 +10,10 @@ export default function RadioButtonsGroup() {
   const [question, setQuestion] = React.useState('');
   
   React.useEffect(() => {
-              fetch('https://ohjelmistoprojektii.herokuapp.com/kysymys/151') //Tähän tulee sitten linkki herokuun
+              fetch('https://ohjelmistoprojektii.herokuapp.com/kysymys') //Tähän tulee sitten linkki herokuun
               .then(response => response.json())
               .then ((responseData) => {
-                  setQuestion(responseData.results[0].question);
+                  setQuestion(responseData[0].question);
               })
           }, [])
          
