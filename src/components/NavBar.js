@@ -10,6 +10,9 @@ function NavBar() {
             <li>
                 <Link to="/questions" className="link">Questions</Link>
             </li>
+            <li>
+                <Link to="/answers" className="link">Answers</Link>
+            </li>
         </ul>
     )
 }
