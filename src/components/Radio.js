@@ -46,7 +46,7 @@ export default function RadioButtonsGroup() {
 
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend">{question}Tähän tulee kysymys</FormLabel>
+      <FormLabel component="legend">{question}</FormLabel>
       <RadioGroup aria-label="question" name="question1" value={value} onChange={handleChange}>
         <FormControlLabel value="1" control={<Radio />} label="1" />
         <FormControlLabel value="2" control={<Radio />} label="2" />
