@@ -8,7 +8,7 @@ export default function OpenQuestion() {
         fetch('https://ohjelmistoprojektii.herokuapp.com/kysymys') //Tähän tulee linkki herokuun
         .then(response => response.json())
         .then ((responseData) => {
-            setQuestion(responseData.results[1].question);
+            setQuestion(responseData[1].question);
         })
     }, [])
 
