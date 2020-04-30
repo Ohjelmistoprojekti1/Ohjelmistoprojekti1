@@ -10,11 +10,11 @@ export default function Answers() {
         setAnswer] = React.useState([
         {
             kysymys1: 'hyvää',
-            kysymys2: 'tietojenkäsittelyä'
+            kysymys2: 'hyvin'
         },
         {
             kysymys1: 'ihan ok',
-            kysymys2: 'liiketaloutta'
+            kysymys2: 'ei niin hyvin'
         }
     ]);
     const [questions,
