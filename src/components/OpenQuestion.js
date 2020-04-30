@@ -1,41 +1,63 @@
 import React from 'react';
+import Input from '@material-ui/core/Input';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel'
+import Button from '@material-ui/core/Button'
+
 
 export default function OpenQuestion() {
-    const [answer, setAnswer] = React.useState('');
+    const [value, setValue] = React.useState({answer: ''});
     const [question, setQuestion] = React.useState('');
 
     React.useEffect(() => {
-        fetch('https://ohjelmistoprojektii.herokuapp.com/kysymys') //Tähän tulee linkki herokuun
+        fetch('https://ohjelmistoprojektii.herokuapp.com/api/kysymyses') //Tähän tulee linkki herokuun
         .then(response => response.json())
         .then ((responseData) => {
-            setQuestion(responseData[1].question);
+            setQuestion(responseData._embedded.kysymyses[1].question);
         })
     }, [])
 
-    const inputChanged = (event) => {
-        setAnswer(event.target.value);
+    const handleInputChange = (event) => {
+        setValue({[event.target.name]: event.target.value })
+        console.log(value)
     }
 
-    const saveAnswer = (answer) => {
-        fetch('https://ohjelmistoprojektii.herokuapp.com/vastaus', //tähän tulee linkki herokuun
+    const saveAnswer = (event) => {
+        event.preventDefault();
+        fetch('https://ohjelmistoprojektii.herokuapp.com/api/vastauses', //tähän tulee linkki herokuun
             {
                 method:'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(answer)
+                body: JSON.stringify(value)
             }
         )
+        .then(function(response) {                      // first then()
+            if(response.ok)
+            {
+              return response.text();         
+            }
+      
+            throw new Error('Something went wrong.');
+        })  
+        .then(function(text) {                          // second then()
+          console.log('Request successful', text);  
+        })  
+        .catch(function(error) {                        // catch
+          console.log('Request failed', error);
+        });
 
     }
        
 
     return (
-        
-        <div>
-            <p>{question}</p>
-            <input type="text" size="100" value={answer} onChange={inputChanged} />
-            <button onClick={saveAnswer}>Tallenna</button>
-        </div>
+        <form onSubmit={saveAnswer}>
+            <FormControl component="fieldset">
+                <InputLabel>{question}</InputLabel>
+                <Input name="answer" value={value.answer} onChange={e => handleInputChange(e)} variant="outlined" placeholder={question} aria-describedby="my-helper-text" />
+                <Button type="submit">Tallenna</Button>
+            </FormControl>
+        </form>
     )
 }
