@@ -18,15 +18,13 @@ export default function Answers() {
         }
     ]);
     const [questions,
-        setQuestions] = React.useState(['mitä kuuluu?', 'mitä opiskelet?']);
-    const [question,
-        setQuestion] = React.useState('');
+        setQuestions] = React.useState([]);
 
     React.useEffect(() => {
-        fetch('') //Tähän tulee sitten linkki herokuun -api/taytetytKyselyt
+        fetch('https://ohjelmistoprojektii.herokuapp.com/kysymys') //hakee kaikki kysymykset
             .then(response => response.json())
             .then((responseData) => {
-                setQuestion(responseData.results[0].question);
+                setQuestions(responseData);
             })
     }, [])
 
@@ -37,7 +35,7 @@ export default function Answers() {
                 <TableRow>
                     <TableCell>Vastaajat</TableCell>
                     {questions.map((item, index) => 
-                        <TableCell key={index}>{item}</TableCell>
+                        <TableCell key={index}>{item.question}</TableCell>
                         )}
                     </TableRow>
                 </TableHead>
