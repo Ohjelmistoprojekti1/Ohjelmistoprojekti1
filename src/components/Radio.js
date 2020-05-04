@@ -9,11 +9,13 @@ import Button from '@material-ui/core/Button';
 export default function RadioButtonsGroup() {
   const [value, setValue] = React.useState({answer: ''});
   const [question, setQuestion] = React.useState('');
+  const [questions, setQuestions] = React.useState([]);
   
   React.useEffect(() => {
       fetch('https://ohjelmistoprojektii.herokuapp.com/api/kysymyses') //Tähän tulee sitten linkki herokuun
           .then(response => response.json())
           .then ((responseData) => {
+          setQuestions(responseData._embedded.kysymyses)
           setQuestion(responseData._embedded.kysymyses[0].question);
               })
     }, [])
@@ -63,8 +65,9 @@ export default function RadioButtonsGroup() {
 
   return (
     <form onSubmit={saveAnswer}>
+      {questions.map(question => ( 
       <FormControl component="fieldset">
-        <FormLabel component="legend">{question}</FormLabel>
+        <FormLabel component="legend">{question.question}</FormLabel>
         <RadioGroup aria-label="question" name="answer" onChange={handleChange}>
           <FormControlLabel value="1" control={<Radio />} label="1" />
           <FormControlLabel value="2" control={<Radio />} label="2" />
@@ -73,6 +76,7 @@ export default function RadioButtonsGroup() {
         </RadioGroup>
         <Button type="submit">Tallenna</Button>
       </FormControl>
+      ))}
     </form>
   );
 }
