@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button'
 export default function OpenQuestion() {
     const [value, setValue] = React.useState({answer: ''});
     const [question, setQuestion] = React.useState('');
+    const [number, setNumber] = React.useState(0);
 
     React.useEffect(() => {
         fetch('https://ohjelmistoprojektii.herokuapp.com/api/kysymyses') //Tähän tulee linkki herokuun
@@ -48,9 +49,11 @@ export default function OpenQuestion() {
           console.log('Request failed', error);
         });
 
+        setNumber(number + 1);
+
     }
        
-
+    if(number < 1) {
     return (
         <form onSubmit={saveAnswer}>
             <FormControl component="fieldset">
@@ -60,4 +63,9 @@ export default function OpenQuestion() {
             </FormControl>
         </form>
     )
+    }else{
+        return(
+            <div><h1>Kiitos vastaamisesta!</h1></div>
+        )
+    }
 }
