@@ -14,7 +14,7 @@ export default function Answerer () {
 
     const saveEmail = (event) => {
         event.preventDefault();
-        fetch('https://ohjelmistoprojektii.herokuapp.com/api/vastaaja', //tähän tulee linkki herokuun
+        fetch('https://ohjelmistoprojektii.herokuapp.com/api/vastaajas', //tähän tulee linkki herokuun
             {
                 method:'POST',
                 headers: {
