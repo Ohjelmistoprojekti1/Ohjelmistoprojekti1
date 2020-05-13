@@ -3,18 +3,16 @@ import Button from '@material-ui/core/Button';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
-import Radio from './Radio.js';
 
-export default function Answerer () {
-    const [value, setValue] = React.useState({email: ''});
-    const [number, setNumber] = React.useState(0);
+export default function Answerer (props) {
+    const [vastaaja, setVastaaja] = React.useState({email: ''});
 
     const handleInputChange = (event) => {
-        setValue({[event.target.name]: event.target.value })
-        console.log(value)
+        setVastaaja({[event.target.name]: event.target.value })
+        console.log(vastaaja.email)
     }
 
-    const saveEmail = (event) => {
+    const saveVastaaja = (event) => {
         event.preventDefault();
         fetch('https://ohjelmistoprojektii.herokuapp.com/api/vastaajas', //tähän tulee linkki herokuun
             {
@@ -22,7 +20,7 @@ export default function Answerer () {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(value)
+                body: JSON.stringify(vastaaja)
             }
         )
         .then(function(response) {                      // first then()
@@ -34,29 +32,25 @@ export default function Answerer () {
             throw new Error('Something went wrong.');
         })  
         .then(function(text) {                          // second then()
-          console.log('Request successful', text);  
+          console.log('Request successful', text);
+          let selfHref = JSON.parse(text)._links.self.href;
+          console.log(selfHref)
+          props.sendHrefToQuiz(selfHref);
         })  
         .catch(function(error) {                        // catch
           console.log('Request failed', error);
         });
 
-        setNumber(number + 1);
-
     }
 
-    if(number < 1) {
     return (
-        <form onSubmit={saveEmail}>
+        <form onSubmit={saveVastaaja}>
             <FormControl component="fieldset">
                 <InputLabel>Sähköposti</InputLabel>
-                <Input name="email" value={value.email} onChange={e => handleInputChange(e)} variant="outlined" placeholder="sähköposti" aria-describedby="my-helper-text" />
-                <Button type="submit">Seuraava</Button>
+                <Input name="email" value={vastaaja.email} onChange={e => handleInputChange(e)} variant="outlined" placeholder="sähköposti" aria-describedby="my-helper-text" />
+                <Button type="submit">Tallenna</Button>
             </FormControl>
         </form>
     )
-    }else{
-        return(<div><Radio/></div>
-        )
-    }
-    
+
 }
