@@ -5,36 +5,28 @@ import InputLabel from '@material-ui/core/InputLabel'
 import Button from '@material-ui/core/Button'
 
 
-export default function OpenQuestion() {
-    const [value, setValue] = React.useState({answer: ''});
-    const [question, setQuestion] = React.useState('');
-    const [number, setNumber] = React.useState(0);
+export default function OpenQuestion(props) {
+    const [vastaus, setVastaus] = React.useState({answer: '', kysymys: props.question._links.self.href, vastaaja: props.vastaajaHref});
+    const [questionString, setQuestionString] = React.useState(props.question.question);
 
-    React.useEffect(() => {
-        fetch('https://ohjelmistoprojektii.herokuapp.com/api/kysymyses') //Tähän tulee linkki herokuun
-        .then(response => response.json())
-        .then ((responseData) => {
-            setQuestion(responseData._embedded.kysymyses[1].question);
-        })
-    }, [])
-
-    const handleInputChange = (event) => {
-        setValue({[event.target.name]: event.target.value })
-        console.log(value)
+    const handleChange = (event) => {
+        setVastaus({answer: event.target.value, kysymys: vastaus.kysymys, vastaaja: vastaus.vastaaja});
     }
 
-    const saveAnswer = (event) => {
+    const saveVastaus = (event) => {
         event.preventDefault();
-        fetch('https://ohjelmistoprojektii.herokuapp.com/api/vastauses', //tähän tulee linkki herokuun
-            {
-                method:'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(value)
-            }
-        )
-        .then(function(response) {                      // first then()
+        
+          console.log(vastaus);
+          fetch('https://ohjelmistoprojektii.herokuapp.com/api/vastauses', //tähän tulee linkki herokuun
+              {
+                  method:'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(vastaus)
+              }
+          )
+          .then(function(response) {                      // first then()
             if(response.ok)
             {
               return response.text();         
@@ -44,28 +36,24 @@ export default function OpenQuestion() {
         })  
         .then(function(text) {                          // second then()
           console.log('Request successful', text);  
+          props.incrementQuestionNo();
         })  
         .catch(function(error) {                        // catch
           console.log('Request failed', error);
         });
-
-        setNumber(number + 1);
-
+      
     }
        
-    if(number < 1) {
     return (
-        <form onSubmit={saveAnswer}>
-            <FormControl component="fieldset">
-                <InputLabel>{question}</InputLabel>
-                <Input name="answer" value={value.answer} onChange={e => handleInputChange(e)} variant="outlined" placeholder={question} aria-describedby="my-helper-text" />
-                <Button type="submit">Tallenna</Button>
-            </FormControl>
-        </form>
-    )
-    }else{
-        return(
-            <div><h1>Kiitos vastaamisesta!</h1></div>
-        )
-    }
+        <div>
+            <br></br><br></br><br></br>
+            <form onSubmit={saveVastaus}>
+                <FormControl component="fieldset">
+                    <InputLabel>{questionString}</InputLabel>
+                    <Input name="answer" value={vastaus.answer} onChange={e => handleChange(e)} variant="outlined" placeholder={questionString} aria-describedby="my-helper-text" />
+                    <Button type="submit">Seuraava</Button>
+                </FormControl>
+            </form>
+        </div>
+    );
 }
