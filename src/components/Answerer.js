@@ -6,10 +6,11 @@ import InputLabel from '@material-ui/core/InputLabel';
 
 export default function Answerer (props) {
     const [vastaaja, setVastaaja] = React.useState({email: ''});
+    const [disabled, setDisabled] = React.useState(true);
 
     const handleInputChange = (event) => {
-        setVastaaja({[event.target.name]: event.target.value })
-        console.log(vastaaja.email)
+        setVastaaja({[event.target.name]: event.target.value });
+        setDisabled(false);
     }
 
     const saveVastaaja = (event) => {
@@ -48,7 +49,7 @@ export default function Answerer (props) {
             <FormControl component="fieldset">
                 <InputLabel>Sähköposti</InputLabel>
                 <Input name="email" value={vastaaja.email} onChange={e => handleInputChange(e)} variant="outlined" placeholder="sähköposti" aria-describedby="my-helper-text" />
-                <Button type="submit">Tallenna</Button>
+                <Button id="tallennaButton" type="submit" disabled={disabled}>Tallenna</Button>
             </FormControl>
         </form>
     )

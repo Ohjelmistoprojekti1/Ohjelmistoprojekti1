@@ -8,9 +8,11 @@ import Button from '@material-ui/core/Button'
 export default function OpenQuestion(props) {
     const [vastaus, setVastaus] = React.useState({answer: '', kysymys: props.question._links.self.href, vastaaja: props.vastaajaHref});
     const [questionString, setQuestionString] = React.useState(props.question.question);
+    const [disabled, setDisabled] = React.useState(true);
 
     const handleChange = (event) => {
         setVastaus({answer: event.target.value, kysymys: vastaus.kysymys, vastaaja: vastaus.vastaaja});
+        setDisabled(false);
     }
 
     const saveVastaus = (event) => {
@@ -51,7 +53,7 @@ export default function OpenQuestion(props) {
                 <FormControl component="fieldset">
                     <InputLabel>{questionString}</InputLabel>
                     <Input name="answer" value={vastaus.answer} onChange={e => handleChange(e)} variant="outlined" placeholder={questionString} aria-describedby="my-helper-text" />
-                    <Button type="submit">Seuraava</Button>
+                    <Button type="submit" disabled={disabled}>Seuraava</Button>
                 </FormControl>
             </form>
         </div>

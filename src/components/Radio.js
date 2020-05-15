@@ -9,9 +9,26 @@ import Button from '@material-ui/core/Button';
 export default function RadioButtonsGroup(props) {
   const [vastaus, setVastaus] = React.useState({answer: '', kysymys: props.question._links.self.href, vastaaja: props.vastaajaHref});
   const [questionString, setQuestionString] = React.useState(props.question.question);
+  const [vaihtoehdot, setVaihtoehdot] = React.useState([]);
+  const [disabled, setDisabled] = React.useState(true);
          
   const handleChange = (event) => {
     setVastaus({answer: event.target.value, kysymys: vastaus.kysymys, vastaaja: vastaus.vastaaja});
+    console.log(vaihtoehdot);
+    setDisabled(false);
+  }
+
+  React.useEffect(() => {
+    const vaihtoehtoLink = props.question._links.vaihtoehdot.href;
+    fetchVaihtoehdot(vaihtoehtoLink);
+  }, [])
+
+  const fetchVaihtoehdot = (vaihtoehtoHref) => {
+    fetch(vaihtoehtoHref) //Tähän tulee sitten linkki herokuun
+        .then(response => response.json())
+        .then ((responseData) => {
+        setVaihtoehdot(responseData._embedded.vaihtoehtoes)
+            })
   }
 
   const saveVastaus = (event) => {
@@ -53,12 +70,11 @@ return (
         <FormControl component="fieldset">
           <FormLabel component="legend">{questionString}</FormLabel>
           <RadioGroup aria-label="question" name="answer" onChange={handleChange}>
-            <FormControlLabel value="1" control={<Radio />} label="1" />
-            <FormControlLabel value="2" control={<Radio />} label="2" />
-            <FormControlLabel value="3" control={<Radio />} label="3" />
-            <FormControlLabel value="4" control={<Radio />} label="4" />
+            {vaihtoehdot.map((vaihtoehto) =>
+            <FormControlLabel key={vaihtoehto.teksti} value={vaihtoehto.teksti} control={<Radio />} label={vaihtoehto.teksti} />
+            )}
           </RadioGroup>
-          <Button type="submit">Seuraava</Button>
+          <Button type="submit" disabled={disabled}>Seuraava</Button>
         </FormControl>
       </form>
     </div>
