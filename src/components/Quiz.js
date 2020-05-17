@@ -2,6 +2,19 @@ import React from 'react';
 import Radio from './Radio.js';
 import OpenQuestion from './OpenQuestion';
 import Answerer from './Answerer';
+import MobileStepper from '@material-ui/core/MobileStepper';
+import {makeStyles} from '@material-ui/core/styles';
+
+//Asetetaan progressbar keskelle
+const useStyles = makeStyles({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 40,
+        marginBottom: 20
+      },
+  })
 
 function Quiz() {
     // Lista kysymyksistä
@@ -10,6 +23,8 @@ function Quiz() {
     const [vastaajaHref, setVastaajaHref] = React.useState('');
     // Käsiteltävän kysymyksen numero (-1 = ei vielä vastaajaa -> vie Answereriin)
     const [questionNo, setQuestionNo] = React.useState(-1);
+    const classes = useStyles();
+
 
     // Hakee kysymykset kerran
     React.useEffect(() => {
@@ -42,7 +57,13 @@ function Quiz() {
     if (questionNo === -1) {
         return (
             <div>
-            <br></br><br></br>
+            <MobileStepper
+                variant="progress"
+                steps={questions.length + 1}
+                position="static"
+                activeStep={questionNo + 1}
+                className={classes.container}
+            />
             <Answerer sendHrefToQuiz={hrefFromAnswerer}/>
             </div>
         );
@@ -52,10 +73,32 @@ function Quiz() {
         return <div><br></br><br></br><br></br><h1>Kiitos vastaamisesta!</h1></div>;
     // Jos question.type = radio -> Radio
     } else if (questions[questionNo].type === "radio") {
-        return <Radio question={questions[questionNo]} vastaajaHref={vastaajaHref} incrementQuestionNo={incrementQuestionNo}/>
+        return (
+        <div>
+            <MobileStepper
+                    variant="progress"
+                    steps={questions.length + 1}
+                    position="static"
+                    activeStep={questionNo + 1}
+                    className={classes.container}
+                />
+            <Radio question={questions[questionNo]} vastaajaHref={vastaajaHref} incrementQuestionNo={incrementQuestionNo}/>    
+        </div>
+        )
     // Jos question.type = open -> OpenQuestion
     } else if (questions[questionNo].type === "open") {
-        return <OpenQuestion question={questions[questionNo]} vastaajaHref={vastaajaHref} incrementQuestionNo={incrementQuestionNo}/>
+        return (
+        <div>
+            <MobileStepper
+                variant="progress"
+                steps={questions.length + 1}
+                position="static"
+                activeStep={questionNo + 1}
+                className={classes.container}
+            />
+            <OpenQuestion question={questions[questionNo]} vastaajaHref={vastaajaHref} incrementQuestionNo={incrementQuestionNo}/>
+        </div>
+        )
     }
 }
 
