@@ -4,6 +4,7 @@ import OpenQuestion from './OpenQuestion';
 import Answerer from './Answerer';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import {makeStyles} from '@material-ui/core/styles';
+import Raport from './Raport';
 
 //Asetetaan progressbar keskelle
 const useStyles = makeStyles({
@@ -67,10 +68,11 @@ function Quiz() {
             <Answerer sendHrefToQuiz={hrefFromAnswerer}/>
             </div>
         );
-    // Jos questionNo > kysymysten määrä -> kiitos 
-    // TODO: omien vastausten tarkastelu
+    // Jos questionNo > kysymysten määrä -> omien vastausten tarkastelunäkymä 
     } else if (questionNo > (questions.length - 1)) {
-        return <div><br></br><br></br><br></br><h1>Kiitos vastaamisesta!</h1></div>;
+        return (
+            <Raport/>
+        )
     // Jos question.type = radio -> Radio
     } else if (questions[questionNo].type === "radio") {
         return (
