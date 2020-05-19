@@ -8,6 +8,7 @@ const [vastaaja, setVastaaja] = React.useState('')
 const [vastmaara, setVastmaara] = React.useState(0)
 const [vastaukset, setVastaukset] = React.useState([])
 const [kysymykset, setKysymykset] = React.useState([])
+const [num, setNum] = React.useState(0)
 
 React.useEffect(() => {
     getVastmaara();
@@ -40,6 +41,8 @@ const getAnswers = () => {
         .then(response => response.json())
         .then(data => setVastaukset(data._embedded.vastauses))
         .catch(err => console.error(err))
+
+        setNum(num + 1)
 }
 
 const columns1 = [
@@ -62,19 +65,27 @@ const columns2 = [
     
 ]
 
-return(
-    <div>
+if(num === 0) {
+    return(
+            <div>
+                <h1>Kiitos vastaamisesta!</h1>
+                <h3>Voit halutessasi tarkastella vastauksiasi</h3>
+                <button onClick={getAnswers}>Näytä vastaukset</button>
+                </div>
+    )
+    }else{
+        return(
         <div>
-            <h1>Kiitos vastaamisesta!</h1>
-            <h3>Voit halutessasi tarkastella vastauksiasi</h3>
-            <button onClick={getAnswers}>Näytä vastaukset</button>
+            <div>
+                <h1>Kiitos vastaamisesta!</h1>
+                <h3>Voit halutessasi tarkastella vastauksiasi</h3>
+                <button onClick={getAnswers}>Näytä vastaukset</button>
+                </div>
+            <div className='rowC'>
+                <ReactTable defaultPageSize={30} data={kysymykset} columns={columns1} showPagination={false}/>
+                <ReactTable defaultPageSize={30} data={vastaukset} columns={columns2} showPagination={false}/>
             </div>
-        <div className='rowC'>
-            <ReactTable defaultPageSize={30} data={kysymykset} columns={columns1} showPagination={false}/>
-            <ReactTable defaultPageSize={30} data={vastaukset} columns={columns2} showPagination={false}/>
         </div>
-    </div>
-    
-    
-)
+        )
+    }
 }
